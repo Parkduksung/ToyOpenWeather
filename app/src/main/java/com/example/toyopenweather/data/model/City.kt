@@ -1,15 +1,21 @@
 package com.example.toyopenweather.data.model
 
+import com.google.gson.annotations.SerializedName
+
 class City : ArrayList<CityItem>()
 
 data class CityItem(
-    val coord: Coord,
-    val country: String,
+    @SerializedName("id")
     val id: Int,
-    val name: String
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("country")
+    val country: String,
+    @SerializedName("coord")
+    val coord: Coord
 )
 
 data class Coord(
-    val lat: Int,
+    val lat: Double,
     val lon: Double
 )
