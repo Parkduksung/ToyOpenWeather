@@ -64,7 +64,7 @@ class CityListLocalDataSourceImplTest {
 
     companion object {
 
-        private val mockCityList = mutableListOf<CityItem>().apply {
+        val mockCityList = mutableListOf<CityItem>().apply {
             add(
                 CityItem(
                     id = 707860,
