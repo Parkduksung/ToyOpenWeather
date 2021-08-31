@@ -2,6 +2,7 @@ package com.example.toyopenweather.data.source.local
 
 import com.example.toyopenweather.data.model.CityItem
 import com.example.toyopenweather.data.model.Coord
+import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
@@ -17,32 +18,36 @@ class CityLocalDataSourceImplTest {
 
 
     @Mock
-    lateinit var cityLocalDataSourceImpl: CityLocalDataSource
+    lateinit var cityLocalDataSource: CityLocalDataSource
+
+    private val cityLocalDataSourceImpl by lazy { cityLocalDataSource }
 
 
     @Test
     fun checkGetCityListSuccessTest() = runBlocking {
 
-        Mockito.`when`(cityLocalDataSourceImpl.getCityList()).thenReturn(mockCityList)
+        val successResult = Result.success(mockCityList)
+
+        Mockito.`when`(cityLocalDataSource.getCityList()).thenReturn(successResult)
 
         MatcherAssert.assertThat(
             "데이터가 존재하므로 성공.",
-            cityLocalDataSourceImpl.getCityList().isNotEmpty(),
-            Matchers.`is`(true)
+            (cityLocalDataSourceImpl.getCityList() as Result.Success<List<CityItem>>),
+            Matchers.`is`(successResult)
         )
     }
 
     @Test
     fun checkGetCityListFailureTest() = runBlocking {
 
-        val failThrowable = Throwable()
+        val failResult = Result.failure<List<CityItem>>(Throwable())
 
-        Mockito.`when`(cityLocalDataSourceImpl.getCityList()).then { failThrowable }
+        Mockito.`when`(cityLocalDataSource.getCityList()).thenReturn(failResult)
 
         MatcherAssert.assertThat(
             "예외가 발생했기 때문에 실패.",
-            cityLocalDataSourceImpl.getCityList(),
-            Matchers.`is`(failThrowable)
+            (cityLocalDataSourceImpl.getCityList() as Result.Failure<List<CityItem>>),
+            Matchers.`is`(failResult)
         )
     }
 
@@ -58,7 +63,7 @@ class CityLocalDataSourceImplTest {
                     coord = Coord(lat = 44.549999, lon = 34.283333)
                 )
             )
-        }
+        }.toList()
 
     }
 }
