@@ -23,7 +23,7 @@ class CityListLocalDataSourceImplTest {
     @Mock
     lateinit var city: City
 
-    private lateinit var cityLocalDataSourceImpl: CityLocalDataSourceImpl
+    private lateinit var cityLocalDataSourceImpl: CityLocalDataSource
 
 
     @Before
