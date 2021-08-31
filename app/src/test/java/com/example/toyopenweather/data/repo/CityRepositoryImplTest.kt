@@ -1,6 +1,7 @@
 package com.example.toyopenweather.data.repo
 
 import com.example.toyopenweather.data.model.CityItem
+import com.example.toyopenweather.data.model.CityList
 import com.example.toyopenweather.data.source.local.CityListLocalDataSourceImplTest
 import com.example.toyopenweather.data.source.local.CityLocalDataSource
 import com.example.toyopenweather.data.source.local.CityLocalDataSourceImpl
@@ -42,7 +43,7 @@ class CityRepositoryImplTest {
 
         MatcherAssert.assertThat(
             "값을 올바르게 전달받았으므로 성공.",
-            (cityRepositoryImpl.getCityList() as Result.Success<List<CityItem>>),
+            (cityRepositoryImpl.getCityList() as Result.Success<CityList>),
             Matchers.`is`(successResult)
         )
     }
@@ -50,13 +51,13 @@ class CityRepositoryImplTest {
     @Test
     fun checkGetCityListFailureTest() = runBlocking {
 
-        val failResult = Result.failure<List<CityItem>>(Throwable())
+        val failResult = Result.failure<CityList>(Throwable())
 
         Mockito.`when`(cityLocalDataSource.getCityList()).thenReturn(failResult)
 
         MatcherAssert.assertThat(
             "예외가 발생했기 때문에 실패.",
-            (cityRepositoryImpl.getCityList() as Result.Failure<List<CityItem>>),
+            (cityRepositoryImpl.getCityList() as Result.Failure<CityList>),
             Matchers.`is`(failResult)
         )
     }
