@@ -38,7 +38,7 @@ class CityRepositoryImplTest {
 
         val successResult = Result.success(CityListLocalDataSourceImplTest.mockCityList)
 
-        Mockito.`when`(successResult).thenReturn(successResult)
+        Mockito.`when`(cityLocalDataSource.getCityList()).thenReturn(successResult)
 
         MatcherAssert.assertThat(
             "값을 올바르게 전달받았으므로 성공.",
