@@ -2,7 +2,7 @@ package com.example.toyopenweather.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class City : ArrayList<CityItem>()
+class CityList : ArrayList<CityItem>()
 
 data class CityItem(
     @SerializedName("id")
