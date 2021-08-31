@@ -35,12 +35,14 @@ class CityLocalDataSourceImplTest {
     @Test
     fun checkGetCityListFailureTest() = runBlocking {
 
-        Mockito.`when`(cityLocalDataSourceImpl.getCityList()).thenThrow(Throwable())
+        val failThrowable = Throwable()
+
+        Mockito.`when`(cityLocalDataSourceImpl.getCityList()).then { failThrowable }
 
         MatcherAssert.assertThat(
             "예외가 발생했기 때문에 실패.",
             cityLocalDataSourceImpl.getCityList(),
-            Matchers.`is`(Throwable())
+            Matchers.`is`(failThrowable)
         )
     }
 
