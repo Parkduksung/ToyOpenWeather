@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToyOpenWeather">
         <activity
-            android:name=".view.ui.MainActivity"
+            android:name=".view.ui.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
