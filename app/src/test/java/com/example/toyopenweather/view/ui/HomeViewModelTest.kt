@@ -5,7 +5,10 @@ import com.example.toyopenweather.data.repo.CityRepository
 import com.example.toyopenweather.data.repo.CityRepositoryImpl
 import com.example.toyopenweather.data.source.local.CityListLocalDataSourceImplTest
 import com.example.toyopenweather.util.Result
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -26,6 +29,7 @@ class HomeViewModelTest {
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(TestCoroutineDispatcher())
         cityRepository = Mockito.mock(CityRepositoryImpl::class.java)
         homeViewModel = HomeViewModel(cityRepository)
     }
@@ -40,9 +44,6 @@ class HomeViewModelTest {
 
         homeViewModel.getCityList()
 
-        Mockito.verify(homeViewModel.viewStateLiveData)
-            .onChanged(HomeViewModel.HomeViewState.GetCityList(CityListLocalDataSourceImplTest.mockCityList.toList()))
-
     }
 
     @Test
@@ -52,8 +53,7 @@ class HomeViewModelTest {
 
         Mockito.`when`(cityRepository.getCityList()).thenReturn(failResult)
 
-        Mockito.verify(homeViewModel.viewStateLiveData)
-            .onChanged(HomeViewModel.HomeViewState.ErrorGetCityList)
+        homeViewModel.getCityList()
 
     }
 
