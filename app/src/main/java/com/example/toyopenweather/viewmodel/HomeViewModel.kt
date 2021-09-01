@@ -1,4 +1,4 @@
-package com.example.toyopenweather.view.ui
+package com.example.toyopenweather.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

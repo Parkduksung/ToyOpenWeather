@@ -1,6 +1,5 @@
-package com.example.toyopenweather.view.ui
+package com.example.toyopenweather.viewmodel
 
-import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.toyopenweather.data.model.CityList
