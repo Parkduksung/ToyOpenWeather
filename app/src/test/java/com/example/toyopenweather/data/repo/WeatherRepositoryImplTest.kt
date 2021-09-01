@@ -2,6 +2,7 @@ package com.example.toyopenweather.data.repo
 
 import com.example.toyopenweather.api.response.WeatherResponse
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSource
+import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImpl
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImplTest.Companion.mockWeatherResponse
 import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.runBlocking
@@ -22,7 +23,7 @@ class WeatherRepositoryImplTest {
 
     @Before
     fun setUp() {
-        weatherRemoteDataSource = Mockito.mock(WeatherRemoteDataSource::class.java)
+        weatherRemoteDataSource = Mockito.mock(WeatherRemoteDataSourceImpl::class.java)
         weatherRepositoryImpl = WeatherRepositoryImpl(weatherRemoteDataSource)
     }
 
