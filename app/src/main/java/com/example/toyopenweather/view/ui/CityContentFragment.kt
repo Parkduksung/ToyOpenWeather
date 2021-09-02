@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.example.toyopenweather.R
 import com.example.toyopenweather.base.BaseFragment
 import com.example.toyopenweather.databinding.FragmentCityContentBinding
@@ -16,23 +15,28 @@ class CityContentFragment :
 
     private val cityAdapter by lazy { CityAdapter() }
 
-    private val rvCity: RecyclerView by lazy {
-        requireActivity().findViewById(R.id.rv_city)
-    }
-
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.getCityList()
 
-        rvCity.run {
+        initUi()
+        initViewModel()
+
+    }
+
+    private fun initUi() {
+        binding.rvCity.run {
             adapter = cityAdapter
         }
 
         cityAdapter.setOnItemClickListener { cityItem ->
             homeViewModel.routeDetail(cityItem.id)
         }
+    }
+
+    private fun initViewModel() {
+        homeViewModel.getCityList()
 
         homeViewModel.viewStateLiveData.observe(requireActivity()) { viewState ->
             when (viewState) {
@@ -41,12 +45,15 @@ class CityContentFragment :
                 }
 
                 is HomeViewModel.HomeViewState.ErrorGetCityList -> {
-                    Toast.makeText(requireContext(), "Not Load Asset File...", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        resources.getString(R.string.error_get_city_list),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
         }
-
     }
 
 }

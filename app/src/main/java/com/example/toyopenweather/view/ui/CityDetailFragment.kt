@@ -2,6 +2,7 @@ package com.example.toyopenweather.view.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.toyopenweather.R
 import com.example.toyopenweather.base.BaseFragment
@@ -27,6 +28,15 @@ class CityDetailFragment : BaseFragment<FragmentCityDetailBinding>(R.layout.frag
             when (viewState) {
                 is HomeViewModel.HomeViewState.GetCurrentWeather -> {
                     upDataUi(viewState.weatherItem)
+                }
+
+                is HomeViewModel.HomeViewState.ErrorGetCurrentWeather -> {
+                    Toast.makeText(
+                        requireContext(),
+                        resources.getString(R.string.error_get_current_weather),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
                 }
             }
         }
