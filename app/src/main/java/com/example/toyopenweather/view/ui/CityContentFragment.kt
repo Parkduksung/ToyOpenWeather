@@ -1,24 +1,13 @@
 package com.example.toyopenweather.view.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyopenweather.R
-import com.example.toyopenweather.api.WeatherApi
-import com.example.toyopenweather.data.repo.CityRepositoryImpl
-import com.example.toyopenweather.data.repo.WeatherRepositoryImpl
-import com.example.toyopenweather.data.source.local.CityLocalDataSourceImpl
-import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImpl
-import com.example.toyopenweather.util.CityImpl
 import com.example.toyopenweather.view.adapter.CityAdapter
 import com.example.toyopenweather.viewmodel.HomeViewModel
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class CityContentFragment : Fragment(R.layout.fragment_city_content) {
 
@@ -36,6 +25,12 @@ class CityContentFragment : Fragment(R.layout.fragment_city_content) {
 
         rvCity.run {
             adapter = cityAdapter
+        }
+
+        cityAdapter.setOnItemClickListener { item ->
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.container_home, CityDetailFragment.newInstance(item.id))
+                .commit()
         }
 
         homeViewModel.viewStateLiveData.observe(requireActivity()) { homeViewState ->
