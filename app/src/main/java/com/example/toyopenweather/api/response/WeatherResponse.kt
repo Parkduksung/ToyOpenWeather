@@ -1,5 +1,7 @@
 package com.example.toyopenweather.api.response
 
+import com.example.toyopenweather.data.model.WeatherItem
+
 data class WeatherResponse(
     val base: String,
     val clouds: Clouds,
@@ -14,7 +16,19 @@ data class WeatherResponse(
     val visibility: Int,
     val weather: List<Weather>,
     val wind: Wind
-)
+) {
+
+    fun toWeatherItem(): WeatherItem =
+        WeatherItem(
+            name,
+            sys.country,
+            weather[0].main,
+            main.humidity,
+            fromKelvinToCelsius(main.temp).toString()
+        )
+
+    fun fromKelvinToCelsius(num: Double) = num - 273.15
+}
 
 
 data class Clouds(
