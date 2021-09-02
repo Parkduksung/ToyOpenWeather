@@ -35,7 +35,7 @@ class HomeViewModel : ViewModel(), LifecycleObserver {
         }
     }
 
-    suspend fun getCurrentWeatherById(id: Int) {
+    fun getCurrentWeatherById(id: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             when (val getCurrentWeatherResult = weatherRepository.getCurrentWeatherById(id = id)) {
                 is Result.Success -> {
@@ -51,11 +51,22 @@ class HomeViewModel : ViewModel(), LifecycleObserver {
 
     }
 
+
+    fun routeContent() {
+        _viewStateLiveData.value = HomeViewState.RouteContent
+    }
+
+    fun routeDetail(cityId: Int) {
+        _viewStateLiveData.value = HomeViewState.RouteDetail(cityId = cityId)
+    }
+
     sealed class HomeViewState {
         data class GetCityList(val cityList: List<CityItem>) : HomeViewState()
         data class GetCurrentWeather(val weatherResponse: WeatherResponse) : HomeViewState()
         object ErrorGetCityList : HomeViewState()
         object ErrorGetCurrentWeather : HomeViewState()
+        data class RouteDetail(val cityId: Int) : HomeViewState()
+        object RouteContent : HomeViewState()
     }
 
 }

@@ -119,7 +119,7 @@ class HomeViewModelTest : BaseTest() {
     @Test
     fun checkRouteDetailTest() = runBlocking {
 
-        homeViewModel.routeDetail(id = 1234)
+        homeViewModel.routeDetail(cityId = 1234)
 
         Mockito.verify(homeViewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.RouteDetail(cityId = 1234))
