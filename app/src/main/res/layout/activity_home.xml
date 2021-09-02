@@ -7,7 +7,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_home"
-        android:name="com.example.toyopenweather.view.ui.CityMainFragment"
+        android:name="com.example.toyopenweather.view.ui.CityContentFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
