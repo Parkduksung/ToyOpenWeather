@@ -5,4 +5,7 @@
     <string name="city_weather">Weather</string>
     <string name="city_humidity">Humidity</string>
     <string name="city_celsius">Celsius</string>
+
+    <string name="button_search">Search</string>
+    <string name="hint_input_city">Input City</string>
 </resources>
