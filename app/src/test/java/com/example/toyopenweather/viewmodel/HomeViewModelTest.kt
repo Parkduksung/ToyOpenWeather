@@ -106,4 +106,24 @@ class HomeViewModelTest : BaseTest() {
 
     }
 
+    @Test
+    fun checkRouteContentTest() = runBlocking {
+
+        homeViewModel.routeContent()
+
+        Mockito.verify(homeViewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.RouteContent)
+
+    }
+
+    @Test
+    fun checkRouteDetailTest() = runBlocking {
+
+        homeViewModel.routeDetail(id = 1234)
+
+        Mockito.verify(homeViewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.RouteDetail(cityId = 1234))
+
+    }
+
 }

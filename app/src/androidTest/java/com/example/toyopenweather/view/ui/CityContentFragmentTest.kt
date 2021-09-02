@@ -84,7 +84,7 @@ class CityContentFragmentTest {
 
     companion object {
 
-        private val getTotalCityList: CityList =
+        val getTotalCityList: CityList =
             (CityImpl(InstrumentationRegistry.getInstrumentation().targetContext).getCityList() as Result.Success).value
 
         private val lastIndexItem: CityItem
@@ -93,7 +93,7 @@ class CityContentFragmentTest {
         private val firstIndexItem: CityItem
             get() = getTotalCityList.first()
 
-        private val CITY_LIST_LAST_POSITION: Int
+        val CITY_LIST_LAST_POSITION: Int
             get() = getTotalCityList.lastIndex
     }
 
