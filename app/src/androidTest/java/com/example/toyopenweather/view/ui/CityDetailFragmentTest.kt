@@ -5,14 +5,25 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.toyopenweather.R
-import com.example.toyopenweather.api.response.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import org.hamcrest.Matchers
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class CityDetailFragmentTest {
 
     @Test
-    fun show_init_display_test() {
+    fun show_init_display_test(): Unit = runBlocking {
+
+        launchFragmentInContainer<CityDetailFragment>(Bundle().apply {
+            putInt("key_city_id", MOCK_ID)
+        })
+
+        delay(1000)
 
         Espresso.onView(ViewMatchers.withText("Name"))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -50,70 +61,37 @@ class CityDetailFragmentTest {
     }
 
     @Test
-    fun should_show_city_info_when_item_click() {
-
+    fun should_show_city_info_when_item_click(): Unit = runBlocking {
 
         launchFragmentInContainer<CityDetailFragment>(Bundle().apply {
-            putInt("key_city_id", mockWeatherResponse.id)
+            putInt("key_city_id", MOCK_ID)
         })
 
-        val toWeatherItem = mockWeatherResponse.toWeatherItem()
+        delay(1000)
 
-        Espresso.onView(ViewMatchers.withText(toWeatherItem.name))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(toWeatherItem.country))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(toWeatherItem.humidity))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(toWeatherItem.weather))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(toWeatherItem.celsius))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.tv_weather))
+            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(EMPTY_STRING))))
+
+        Espresso.onView(ViewMatchers.withId(R.id.tv_humidity))
+            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(EMPTY_STRING))))
+
+        Espresso.onView(ViewMatchers.withId(R.id.tv_name))
+            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(EMPTY_STRING))))
+
+        Espresso.onView(ViewMatchers.withId(R.id.tv_country))
+            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(EMPTY_STRING))))
+
+        Espresso.onView(ViewMatchers.withId(R.id.tv_celsius))
+            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.withText(EMPTY_STRING))))
 
     }
 
     companion object {
-        val mockWeatherResponse = WeatherResponse(
-            base = "stations",
-            clouds = Clouds(all = 0),
-            cod = 200,
-            coord = Coord(lat = 44.55, lon = 34.2833),
-            dt = 1630473046,
-            id = 707860,
-            main = Main(
-                feels_like = 296.81,
-                grnd_level = 1001,
-                humidity = 56,
-                pressure = 1013,
-                sea_level = 1013,
-                temp = 296.92,
-                temp_max = 296.92,
-                temp_min = 296.92
-            ),
-            name = "Gurzuf",
-            sys = Sys(
-                country = "UA",
-                id = 2037874,
-                sunrise = 1630465533,
-                sunset = 1630513239,
-                type = 2
-            ),
-            timezone = 10800,
-            visibility = 10000,
-            weather = listOf(
-                Weather(
-                    description = "clear sky",
-                    icon = "01d",
-                    id = 800,
-                    main = "Clear"
-                )
-            ),
-            wind = Wind(
-                deg = 279,
-                gust = 1.46,
-                speed = 0.99
-            )
-        )
+
+        private const val MOCK_ID = 707860
+        private const val EMPTY_STRING = ""
+
+
     }
 }
 

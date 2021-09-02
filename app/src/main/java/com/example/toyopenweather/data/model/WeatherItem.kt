@@ -4,6 +4,6 @@ data class WeatherItem(
     val name : String,
     val country : String,
     val weather : String,
-    val humidity : Int,
+    val humidity : String,
     val celsius : String
 )

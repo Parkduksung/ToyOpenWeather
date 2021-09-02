@@ -1,6 +1,7 @@
 package com.example.toyopenweather.api.response
 
 import com.example.toyopenweather.data.model.WeatherItem
+import kotlin.math.round
 
 data class WeatherResponse(
     val base: String,
@@ -23,11 +24,11 @@ data class WeatherResponse(
             name,
             sys.country,
             weather[0].main,
-            main.humidity,
-            fromKelvinToCelsius(main.temp).toString()
+            main.humidity.toString(),
+            round(fromKelvinToCelsius(main.temp)).toString()
         )
 
-    fun fromKelvinToCelsius(num: Double) = num - 273.15
+    fun fromKelvinToCelsius(num: Double): Double = num - 273.15
 }
 
 

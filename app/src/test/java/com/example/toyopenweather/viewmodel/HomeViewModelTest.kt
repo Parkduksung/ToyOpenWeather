@@ -84,7 +84,7 @@ class HomeViewModelTest : ViewModelBaseTest() {
         homeViewModel.getCurrentWeatherById(id = 707860)
 
         Mockito.verify(viewStateObserver)
-            .onChanged(HomeViewModel.HomeViewState.GetCurrentWeather((successResult as Result.Success).value))
+            .onChanged(HomeViewModel.HomeViewState.GetCurrentWeather((successResult as Result.Success).value.toWeatherItem()))
 
     }
 

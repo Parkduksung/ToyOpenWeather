@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ToyOpenWeather</string>
+    <string name="city_name">Name</string>
+    <string name="city_country">Country</string>
+    <string name="city_weather">Weather</string>
+    <string name="city_humidity">Humidity</string>
+    <string name="city_celsius">Celsius</string>
 </resources>
