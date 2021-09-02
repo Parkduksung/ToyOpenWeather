@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.toyopenweather.R
+import com.example.toyopenweather.base.BaseFragment
+import com.example.toyopenweather.databinding.FragmentCityDetailBinding
 import com.example.toyopenweather.viewmodel.HomeViewModel
 
-class CityDetailFragment : Fragment(R.layout.fragment_city_detail) {
+class CityDetailFragment : BaseFragment<FragmentCityDetailBinding>(R.layout.fragment_city_detail) {
 
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
