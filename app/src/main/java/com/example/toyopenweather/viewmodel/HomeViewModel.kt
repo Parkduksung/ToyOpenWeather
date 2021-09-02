@@ -1,5 +1,6 @@
 package com.example.toyopenweather.viewmodel
 
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,12 +16,12 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val cityRepository: CityRepository,
     private val weatherRepository: WeatherRepository
-) : ViewModel() {
+) : ViewModel(), LifecycleObserver {
 
     private val _viewStateLiveData = MutableLiveData<HomeViewState>()
     val viewStateLiveData: LiveData<HomeViewState> = _viewStateLiveData
 
-    suspend fun getCityList() {
+    fun getCityList() {
         CoroutineScope(Dispatchers.Main).launch {
             when (val getCityListResult = cityRepository.getCityList()) {
                 is Result.Success -> {

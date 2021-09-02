@@ -13,4 +13,17 @@ class WeatherRepositoryImpl(private val weatherRemoteDataSource: WeatherRemoteDa
         withContext(Dispatchers.IO) {
             return@withContext weatherRemoteDataSource.getCurrentWeatherById(id = id)
         }
+
+    companion object {
+
+        private var instance: WeatherRepositoryImpl? = null
+
+        fun getInstance(
+            weatherRemoteDataSource: WeatherRemoteDataSource
+        ): WeatherRepository =
+            instance ?: WeatherRepositoryImpl(weatherRemoteDataSource).also {
+                instance = it
+            }
+
+    }
 }

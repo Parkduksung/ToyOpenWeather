@@ -11,4 +11,16 @@ class CityRepositoryImpl(private val cityLocalDataSource: CityLocalDataSource) :
     override suspend fun getCityList(): Result<CityList> = withContext(Dispatchers.IO) {
         return@withContext cityLocalDataSource.getCityList()
     }
+
+    companion object {
+
+        private var instance: CityRepositoryImpl? = null
+
+        fun getInstance(
+            cityLocalDataSource: CityLocalDataSource
+        ): CityRepository =
+            instance ?: CityRepositoryImpl(cityLocalDataSource).also {
+                instance = it
+            }
+    }
 }

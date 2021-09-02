@@ -15,4 +15,18 @@ class WeatherRemoteDataSourceImpl(private val weatherApi: WeatherApi) : WeatherR
                 Result.failure(Throwable())
             }
         }
+
+    companion object {
+
+        private var instance: WeatherRemoteDataSourceImpl? = null
+
+        fun getInstance(
+            weatherApi: WeatherApi
+        ): WeatherRemoteDataSource =
+            instance ?: WeatherRemoteDataSourceImpl(weatherApi).also {
+                instance = it
+            }
+
+    }
+
 }
