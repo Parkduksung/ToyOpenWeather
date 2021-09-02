@@ -1,5 +1,6 @@
 package com.example.toyopenweather.data.source.remote
 
+import base.BaseTest
 import com.example.toyopenweather.api.WeatherApi
 import com.example.toyopenweather.api.response.*
 import com.example.toyopenweather.util.Result
@@ -10,26 +11,33 @@ import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@RunWith(MockitoJUnitRunner::class)
-class WeatherRemoteDataSourceImplTest {
+class WeatherRemoteDataSourceImplTest : BaseTest() {
 
     @Mock
     lateinit var weatherApi: WeatherApi
 
     private lateinit var weatherRemoteDataSourceImpl: WeatherRemoteDataSourceImpl
 
+    override fun createModules(): List<Module> {
+        return listOf(
+            module {
+                single { weatherApi }
+            }
+        )
+    }
+
     @Before
-    fun setUp() {
-        weatherApi = Mockito.mock(WeatherApi::class.java)
-        weatherRemoteDataSourceImpl = WeatherRemoteDataSourceImpl(weatherApi)
+    override fun setUp() {
+        super.setUp()
+        weatherRemoteDataSourceImpl = WeatherRemoteDataSourceImpl()
         initMockWeatherApi()
     }
 

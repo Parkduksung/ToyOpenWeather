@@ -1,26 +1,21 @@
 package com.example.toyopenweather.data.repo
 
-import com.example.toyopenweather.data.model.CityItem
+import base.BaseTest
 import com.example.toyopenweather.data.model.CityList
 import com.example.toyopenweather.data.source.local.CityListLocalDataSourceImplTest
 import com.example.toyopenweather.data.source.local.CityLocalDataSource
-import com.example.toyopenweather.data.source.local.CityLocalDataSourceImpl
 import com.example.toyopenweather.util.Result
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
-class CityRepositoryImplTest {
+class CityRepositoryImplTest : BaseTest() {
 
 
     @Mock
@@ -28,10 +23,18 @@ class CityRepositoryImplTest {
 
     private lateinit var cityRepositoryImpl: CityRepository
 
+    override fun createModules(): List<Module> {
+        return listOf(
+            module {
+                single { cityLocalDataSource }
+            }
+        )
+    }
+
     @Before
-    fun setUp() {
-        cityLocalDataSource = Mockito.mock(CityLocalDataSourceImpl::class.java)
-        cityRepositoryImpl = CityRepositoryImpl(cityLocalDataSource)
+    override fun setUp() {
+        super.setUp()
+        cityRepositoryImpl = CityRepositoryImpl()
     }
 
     @Test

@@ -1,30 +1,39 @@
 package com.example.toyopenweather.data.repo
 
+import base.BaseTest
 import com.example.toyopenweather.api.response.WeatherResponse
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSource
-import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImpl
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImplTest.Companion.mockWeatherResponse
 import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
 
-class WeatherRepositoryImplTest {
+class WeatherRepositoryImplTest : BaseTest() {
 
     @Mock
     lateinit var weatherRemoteDataSource: WeatherRemoteDataSource
 
     private lateinit var weatherRepositoryImpl: WeatherRepositoryImpl
 
+    override fun createModules(): List<Module> {
+        return listOf(
+            module {
+                single { weatherRemoteDataSource }
+            }
+        )
+    }
+
     @Before
-    fun setUp() {
-        weatherRemoteDataSource = Mockito.mock(WeatherRemoteDataSourceImpl::class.java)
-        weatherRepositoryImpl = WeatherRepositoryImpl(weatherRemoteDataSource)
+    override fun setUp() {
+        super.setUp()
+        weatherRepositoryImpl = WeatherRepositoryImpl()
     }
 
     @Test

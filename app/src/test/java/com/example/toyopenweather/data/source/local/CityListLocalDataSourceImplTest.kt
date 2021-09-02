@@ -1,24 +1,23 @@
 package com.example.toyopenweather.data.source.local
 
+import base.BaseTest
 import com.example.toyopenweather.data.model.CityItem
 import com.example.toyopenweather.data.model.CityList
 import com.example.toyopenweather.data.model.Coord
 import com.example.toyopenweather.util.City
-import com.example.toyopenweather.util.CityImpl
 import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 
 
-@RunWith(MockitoJUnitRunner::class)
-class CityListLocalDataSourceImplTest {
+class CityListLocalDataSourceImplTest : BaseTest() {
 
 
     @Mock
@@ -26,11 +25,18 @@ class CityListLocalDataSourceImplTest {
 
     private lateinit var cityLocalDataSourceImpl: CityLocalDataSource
 
+    override fun createModules(): List<Module> {
+        return listOf(
+            module {
+                single { city }
+            }
+        )
+    }
 
     @Before
-    fun setUp() {
-        city = Mockito.mock(CityImpl::class.java)
-        cityLocalDataSourceImpl = CityLocalDataSourceImpl(city)
+    override fun setUp() {
+        super.setUp()
+        cityLocalDataSourceImpl = CityLocalDataSourceImpl()
     }
 
 

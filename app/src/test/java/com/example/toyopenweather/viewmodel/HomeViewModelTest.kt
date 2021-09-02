@@ -1,32 +1,23 @@
 package com.example.toyopenweather.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import base.BaseTest
 import com.example.toyopenweather.api.response.WeatherResponse
 import com.example.toyopenweather.data.model.CityList
 import com.example.toyopenweather.data.repo.CityRepository
-import com.example.toyopenweather.data.repo.CityRepositoryImpl
 import com.example.toyopenweather.data.repo.WeatherRepository
-import com.example.toyopenweather.data.repo.WeatherRepositoryImpl
 import com.example.toyopenweather.data.source.local.CityListLocalDataSourceImplTest.Companion.mockCityList
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImplTest.Companion.mockWeatherResponse
 import com.example.toyopenweather.util.Result
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.koin.core.module.Module
+import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
-class HomeViewModelTest {
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
+class HomeViewModelTest : BaseTest() {
 
     @Mock
     lateinit var cityRepository: CityRepository
@@ -39,13 +30,19 @@ class HomeViewModelTest {
 
     private lateinit var homeViewModel: HomeViewModel
 
+    override fun createModules(): List<Module> {
+        return listOf(
+            module {
+                single { cityRepository }
+                single { weatherRepository }
+            }
+        )
+    }
 
     @Before
-    fun setUp() {
-        Dispatchers.setMain(TestCoroutineDispatcher())
-        cityRepository = Mockito.mock(CityRepositoryImpl::class.java)
-        weatherRepository = Mockito.mock(WeatherRepositoryImpl::class.java)
-        homeViewModel = HomeViewModel(cityRepository, weatherRepository)
+    override fun setUp() {
+        super.setUp()
+        homeViewModel = HomeViewModel()
         homeViewModel.viewStateLiveData.observeForever(homeViewStateObserver)
     }
 
