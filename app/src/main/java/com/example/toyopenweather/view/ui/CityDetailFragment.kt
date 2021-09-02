@@ -2,9 +2,13 @@ package com.example.toyopenweather.view.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.toyopenweather.R
+import com.example.toyopenweather.viewmodel.HomeViewModel
 
 class CityDetailFragment : Fragment(R.layout.fragment_city_detail) {
+
+    private val homeViewModel by activityViewModels<HomeViewModel>()
 
     companion object {
 

@@ -3,7 +3,7 @@ package com.example.toyopenweather.view.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.toyopenweather.R
 import com.example.toyopenweather.view.adapter.CityAdapter
@@ -17,7 +17,7 @@ class CityContentFragment : Fragment(R.layout.fragment_city_content) {
         requireActivity().findViewById(R.id.rv_city)
     }
 
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by activityViewModels<HomeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
