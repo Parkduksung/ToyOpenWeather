@@ -9,6 +9,7 @@ import okhttp3.Request
 import okio.Timeout
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.module.Module
@@ -71,6 +72,10 @@ class WeatherRemoteDataSourceImplTest : BaseTest() {
     }
 
     private fun initMockWeatherApi() {
+
+        Assert.assertEquals(WeatherApi.WEATHER_BY_ID , "data/2.5/weather")
+        Assert.assertEquals(WeatherApi.APP_KEY , "a07cb097858e46d4e01fbb55f39849d6")
+
         Mockito.`when`(weatherApi.getCurrentWeatherById(id = 707860)).thenReturn(
             object : Call<WeatherResponse> {
                 override fun execute(): Response<WeatherResponse> {
