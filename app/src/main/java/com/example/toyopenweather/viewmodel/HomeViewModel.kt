@@ -12,11 +12,12 @@ import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 
-class HomeViewModel(
-    private val cityRepository: CityRepository,
-    private val weatherRepository: WeatherRepository
-) : ViewModel(), LifecycleObserver {
+class HomeViewModel : ViewModel(), LifecycleObserver {
+
+    private val cityRepository by inject<CityRepository>(CityRepository::class.java)
+    private val weatherRepository by inject<WeatherRepository>(WeatherRepository::class.java)
 
     private val _viewStateLiveData = MutableLiveData<HomeViewState>()
     val viewStateLiveData: LiveData<HomeViewState> = _viewStateLiveData

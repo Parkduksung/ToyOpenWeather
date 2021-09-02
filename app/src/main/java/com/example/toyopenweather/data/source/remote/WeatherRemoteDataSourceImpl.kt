@@ -5,8 +5,12 @@ import com.example.toyopenweather.api.response.WeatherResponse
 import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.java.KoinJavaComponent.inject
 
-class WeatherRemoteDataSourceImpl(private val weatherApi: WeatherApi) : WeatherRemoteDataSource {
+class WeatherRemoteDataSourceImpl : WeatherRemoteDataSource {
+
+    private val weatherApi by inject<WeatherApi>(WeatherApi::class.java)
+
     override suspend fun getCurrentWeatherById(id: Int): Result<WeatherResponse> =
         withContext(Dispatchers.IO) {
             return@withContext try {
@@ -15,18 +19,5 @@ class WeatherRemoteDataSourceImpl(private val weatherApi: WeatherApi) : WeatherR
                 Result.failure(Throwable())
             }
         }
-
-    companion object {
-
-        private var instance: WeatherRemoteDataSourceImpl? = null
-
-        fun getInstance(
-            weatherApi: WeatherApi
-        ): WeatherRemoteDataSource =
-            instance ?: WeatherRemoteDataSourceImpl(weatherApi).also {
-                instance = it
-            }
-
-    }
 
 }

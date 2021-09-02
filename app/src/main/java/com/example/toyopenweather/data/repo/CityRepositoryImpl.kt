@@ -5,22 +5,14 @@ import com.example.toyopenweather.data.source.local.CityLocalDataSource
 import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.java.KoinJavaComponent.inject
 
-class CityRepositoryImpl(private val cityLocalDataSource: CityLocalDataSource) : CityRepository {
+class CityRepositoryImpl : CityRepository {
+
+    private val cityLocalDataSource by inject<CityLocalDataSource>(CityLocalDataSource::class.java)
 
     override suspend fun getCityList(): Result<CityList> = withContext(Dispatchers.IO) {
         return@withContext cityLocalDataSource.getCityList()
     }
 
-    companion object {
-
-        private var instance: CityRepositoryImpl? = null
-
-        fun getInstance(
-            cityLocalDataSource: CityLocalDataSource
-        ): CityRepository =
-            instance ?: CityRepositoryImpl(cityLocalDataSource).also {
-                instance = it
-            }
-    }
 }

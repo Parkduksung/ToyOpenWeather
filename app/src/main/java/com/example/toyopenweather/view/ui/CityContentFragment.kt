@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -23,36 +24,11 @@ class CityContentFragment : Fragment(R.layout.fragment_city_content) {
 
     private val cityAdapter by lazy { CityAdapter() }
 
-    private val rvCity : RecyclerView by lazy {
+    private val rvCity: RecyclerView by lazy {
         requireActivity().findViewById(R.id.rv_city)
     }
 
-    private val homeViewModel: HomeViewModel by lazy {
-        ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-                    return HomeViewModel(
-                        CityRepositoryImpl.getInstance(
-                            CityLocalDataSourceImpl.getInstance(
-                                CityImpl.getInstance(
-                                    requireContext()
-                                )
-                            )
-                        ),
-                        WeatherRepositoryImpl.getInstance(
-                            WeatherRemoteDataSourceImpl.getInstance(
-                                Retrofit.Builder().baseUrl(
-                                    "https://api.openweathermap.org/"
-                                ).addConverterFactory(GsonConverterFactory.create())
-                                    .build()
-                                    .create(WeatherApi::class.java)
-                            )
-                        )
-                    ) as T
-                } else throw IllegalArgumentException()
-            }
-        }).get(HomeViewModel::class.java)
-    }
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
