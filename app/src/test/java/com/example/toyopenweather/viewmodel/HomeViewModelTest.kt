@@ -1,9 +1,7 @@
 package com.example.toyopenweather.viewmodel
 
-import androidx.lifecycle.Observer
 import base.ViewModelBaseTest
 import com.example.toyopenweather.api.response.WeatherResponse
-import com.example.toyopenweather.base.ViewState
 import com.example.toyopenweather.data.model.CityList
 import com.example.toyopenweather.data.repo.CityRepository
 import com.example.toyopenweather.data.repo.WeatherRepository
