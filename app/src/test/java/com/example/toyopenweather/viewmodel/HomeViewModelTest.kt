@@ -1,7 +1,7 @@
 package com.example.toyopenweather.viewmodel
 
 import androidx.lifecycle.Observer
-import base.BaseTest
+import base.ViewModelBaseTest
 import com.example.toyopenweather.api.response.WeatherResponse
 import com.example.toyopenweather.base.ViewState
 import com.example.toyopenweather.data.model.CityList
@@ -18,16 +18,13 @@ import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
 
-class HomeViewModelTest : BaseTest() {
+class HomeViewModelTest : ViewModelBaseTest() {
 
     @Mock
     lateinit var cityRepository: CityRepository
 
     @Mock
     lateinit var weatherRepository: WeatherRepository
-
-    @Mock
-    lateinit var homeViewStateObserver: Observer<ViewState>
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -44,7 +41,7 @@ class HomeViewModelTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         homeViewModel = HomeViewModel(app = application)
-        homeViewModel.viewStateLiveData.observeForever(homeViewStateObserver)
+        homeViewModel.viewStateLiveData.observeForever(viewStateObserver)
     }
 
 
@@ -57,7 +54,7 @@ class HomeViewModelTest : BaseTest() {
 
         homeViewModel.getCityList()
 
-        Mockito.verify(homeViewStateObserver)
+        Mockito.verify(viewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.GetCityList(mockCityList))
 
     }
@@ -71,7 +68,7 @@ class HomeViewModelTest : BaseTest() {
 
         homeViewModel.getCityList()
 
-        Mockito.verify(homeViewStateObserver)
+        Mockito.verify(viewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.ErrorGetCityList)
 
     }
@@ -86,7 +83,7 @@ class HomeViewModelTest : BaseTest() {
 
         homeViewModel.getCurrentWeatherById(id = 707860)
 
-        Mockito.verify(homeViewStateObserver)
+        Mockito.verify(viewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.GetCurrentWeather((successResult as Result.Success).value))
 
     }
@@ -101,7 +98,7 @@ class HomeViewModelTest : BaseTest() {
 
         homeViewModel.getCurrentWeatherById(id = 707860)
 
-        Mockito.verify(homeViewStateObserver)
+        Mockito.verify(viewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.ErrorGetCurrentWeather)
 
 
@@ -112,7 +109,7 @@ class HomeViewModelTest : BaseTest() {
 
         homeViewModel.routeContent()
 
-        Mockito.verify(homeViewStateObserver)
+        Mockito.verify(viewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.RouteContent)
 
     }
@@ -122,7 +119,7 @@ class HomeViewModelTest : BaseTest() {
 
         homeViewModel.routeDetail(cityId = 1234)
 
-        Mockito.verify(homeViewStateObserver)
+        Mockito.verify(viewStateObserver)
             .onChanged(HomeViewModel.HomeViewState.RouteDetail(cityId = 1234))
 
     }
