@@ -25,6 +25,9 @@ abstract class BaseTest {
     val rule = InstantTaskExecutorRule()
 
     @Mock
+    lateinit var application: Application
+
+    @Mock
     lateinit var context: Context
 
     protected abstract fun createModules(): List<Module>

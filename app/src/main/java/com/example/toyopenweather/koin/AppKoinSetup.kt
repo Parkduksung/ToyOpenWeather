@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class AppKoinSetup : KoinBaseSetup() {
 
     private val viewModelModule = module {
-        viewModel { HomeViewModel() }
+        viewModel { HomeViewModel(get()) }
     }
 
     private val repositoryModule = module {

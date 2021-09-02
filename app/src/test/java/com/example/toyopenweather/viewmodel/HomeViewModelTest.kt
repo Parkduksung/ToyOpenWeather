@@ -3,6 +3,7 @@ package com.example.toyopenweather.viewmodel
 import androidx.lifecycle.Observer
 import base.BaseTest
 import com.example.toyopenweather.api.response.WeatherResponse
+import com.example.toyopenweather.base.ViewState
 import com.example.toyopenweather.data.model.CityList
 import com.example.toyopenweather.data.repo.CityRepository
 import com.example.toyopenweather.data.repo.WeatherRepository
@@ -26,7 +27,7 @@ class HomeViewModelTest : BaseTest() {
     lateinit var weatherRepository: WeatherRepository
 
     @Mock
-    lateinit var homeViewStateObserver: Observer<HomeViewModel.HomeViewState>
+    lateinit var homeViewStateObserver: Observer<ViewState>
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -42,7 +43,7 @@ class HomeViewModelTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        homeViewModel = HomeViewModel()
+        homeViewModel = HomeViewModel(app = application)
         homeViewModel.viewStateLiveData.observeForever(homeViewStateObserver)
     }
 
