@@ -7,6 +7,7 @@ import com.example.toyopenweather.data.repo.CityRepository
 import com.example.toyopenweather.data.repo.WeatherRepository
 import com.example.toyopenweather.data.source.local.CityListLocalDataSourceImplTest.Companion.mockCityList
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImplTest.Companion.mockWeatherResponse
+import com.example.toyopenweather.room.entity.CityEntity
 import com.example.toyopenweather.util.Result
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -15,6 +16,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.mockito.Mock
 import org.mockito.Mockito
+import kotlin.test.assertTrue
 
 class HomeViewModelTest : ViewModelBaseTest() {
 
@@ -46,23 +48,95 @@ class HomeViewModelTest : ViewModelBaseTest() {
     @Test
     fun checkGetCityListSuccessStateTest() = runBlocking {
 
-        val successResult = Result.success(mockCityList)
+        val successExistResult = Result.success(mockCityList)
+        val successGetAllCityEntityResult =
+            Result.success(mockCityList.map { it.toCityEntity() }) as Result.Success
 
-        Mockito.`when`(cityRepository.getCityList()).thenReturn(successResult)
+
+        Mockito.`when`(cityRepository.getAssetCityList()).thenReturn(successExistResult)
+        Mockito.`when`(cityRepository.isExistCityList()).thenReturn(true)
+        Mockito.`when`(cityRepository.getAllCityEntity()).thenReturn(successGetAllCityEntityResult)
+
 
         homeViewModel.getCityList()
 
         Mockito.verify(viewStateObserver)
-            .onChanged(HomeViewModel.HomeViewState.GetCityList(mockCityList))
+            .onChanged(HomeViewModel.HomeViewState.GetCityList(successGetAllCityEntityResult.value.map { it.toCityItem() }))
 
     }
 
     @Test
     fun checkGetCityListFailStateTest() = runBlocking {
 
-        val failResult = Result.failure<CityList>(Throwable())
+        val failGetAssetCityListResult = Result.failure<CityList>(Throwable())
 
-        Mockito.`when`(cityRepository.getCityList()).thenReturn(failResult)
+        Mockito.`when`(cityRepository.getAssetCityList()).thenReturn(failGetAssetCityListResult)
+        Mockito.`when`(cityRepository.isExistCityList()).thenReturn(false)
+
+
+        homeViewModel.getCityList()
+
+        Mockito.verify(viewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.ErrorGetCityList)
+
+    }
+
+    @Test
+    fun checkGetCityListListAndRegisterFailStateTest() = runBlocking {
+
+        val successGetAssetCityListResult = Result.success(mockCityList) as Result.Success
+
+        Mockito.`when`(cityRepository.getAssetCityList()).thenReturn(successGetAssetCityListResult)
+        Mockito.`when`(cityRepository.isExistCityList()).thenReturn(false)
+        Mockito.`when`(cityRepository.registerCityList(successGetAssetCityListResult.value))
+            .thenReturn(false)
+
+
+        homeViewModel.getCityList()
+
+        Mockito.verify(viewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.ErrorGetCityList)
+
+    }
+
+    @Test
+    fun checkGetCityListListAndRegisterSuccessStateTest() = runBlocking {
+
+        val successGetAssetCityListResult = Result.success(mockCityList) as Result.Success
+
+        val successGerAllCityEntityResult =
+            Result.success(successGetAssetCityListResult.value.map { it.toCityEntity() }) as Result.Success
+
+        Mockito.`when`(cityRepository.getAssetCityList()).thenReturn(successGetAssetCityListResult)
+        Mockito.`when`(cityRepository.isExistCityList()).thenReturn(false)
+        Mockito.`when`(cityRepository.registerCityList(successGetAssetCityListResult.value))
+            .thenReturn(true)
+
+        Mockito.`when`(cityRepository.getAllCityEntity()).thenReturn(successGerAllCityEntityResult)
+
+
+        homeViewModel.getCityList()
+
+        Mockito.verify(viewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.GetCityList(successGerAllCityEntityResult.value.map { it.toCityItem() }))
+
+    }
+
+    @Test
+    fun checkGetCityListListAndRegisterSuccessAndGetAllCityItemFailStateTest() = runBlocking {
+
+        val successGetAssetCityListResult = Result.success(mockCityList) as Result.Success
+
+        val failGerAllCityEntityResult =
+            Result.failure<List<CityEntity>>(Throwable())
+
+        Mockito.`when`(cityRepository.getAssetCityList()).thenReturn(successGetAssetCityListResult)
+        Mockito.`when`(cityRepository.isExistCityList()).thenReturn(false)
+        Mockito.`when`(cityRepository.registerCityList(successGetAssetCityListResult.value))
+            .thenReturn(true)
+
+        Mockito.`when`(cityRepository.getAllCityEntity()).thenReturn(failGerAllCityEntityResult)
+
 
         homeViewModel.getCityList()
 
@@ -121,5 +195,46 @@ class HomeViewModelTest : ViewModelBaseTest() {
             .onChanged(HomeViewModel.HomeViewState.RouteDetail(cityId = 1234))
 
     }
+
+    @Test
+    fun checkGetCityItemSuccessTest() = runBlocking {
+
+        val mockEntity = mockCityList[0].toCityEntity()
+
+        homeViewModel.inputCityLiveData.value = mockEntity.name
+
+        val successResult = Result.success(mockEntity) as Result.Success
+
+
+
+        Mockito.`when`(cityRepository.getCityEntity(homeViewModel.inputCityLiveData.value!!))
+            .thenReturn(successResult)
+
+        homeViewModel.getCityItem()
+
+        Mockito.verify(viewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.GetCityItem(successResult.value.toCityItem()))
+
+    }
+
+    @Test
+    fun checkGetCityItemFailTest() = runBlocking {
+
+
+        homeViewModel.inputCityLiveData.value = "bb"
+
+        val failResult = Result.Failure<CityEntity>(Throwable())
+
+        Mockito.`when`(cityRepository.getCityEntity(homeViewModel.inputCityLiveData.value!!))
+            .thenReturn(failResult)
+
+        homeViewModel.getCityItem()
+
+        Mockito.verify(viewStateObserver)
+            .onChanged(HomeViewModel.HomeViewState.ErrorGetCityItem)
+
+
+    }
+
 
 }
