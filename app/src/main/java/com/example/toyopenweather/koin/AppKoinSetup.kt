@@ -1,5 +1,6 @@
 package com.example.toyopenweather.koin
 
+import androidx.room.Room
 import com.example.toyopenweather.api.WeatherApi
 import com.example.toyopenweather.data.repo.CityRepository
 import com.example.toyopenweather.data.repo.CityRepositoryImpl
@@ -9,6 +10,7 @@ import com.example.toyopenweather.data.source.local.CityLocalDataSource
 import com.example.toyopenweather.data.source.local.CityLocalDataSourceImpl
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSource
 import com.example.toyopenweather.data.source.remote.WeatherRemoteDataSourceImpl
+import com.example.toyopenweather.room.database.CityDatabase
 import com.example.toyopenweather.util.City
 import com.example.toyopenweather.util.CityImpl
 import com.example.toyopenweather.viewmodel.HomeViewModel
@@ -48,6 +50,18 @@ class AppKoinSetup : KoinBaseSetup() {
         single<City> { CityImpl(get()) }
     }
 
+    private val databaseModule = module {
+        single {
+            Room.databaseBuilder(
+                get(),
+                CityDatabase::class.java,
+                "city_table"
+            )
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+    }
+
 
     override fun getModules(): List<Module> {
         return listOf(
@@ -55,7 +69,8 @@ class AppKoinSetup : KoinBaseSetup() {
             repositoryModule,
             sourceModule,
             apiModule,
-            assetModule
+            assetModule,
+            databaseModule
         )
     }
 

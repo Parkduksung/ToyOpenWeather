@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.toyopenweather.R
 import com.example.toyopenweather.base.BaseFragment
+import com.example.toyopenweather.base.ViewState
 import com.example.toyopenweather.databinding.FragmentCityContentBinding
 import com.example.toyopenweather.view.adapter.CityAdapter
 import com.example.toyopenweather.viewmodel.HomeViewModel
@@ -36,22 +37,25 @@ class CityContentFragment :
     }
 
     private fun initViewModel() {
+
+        binding.viewModel = homeViewModel
+
         homeViewModel.getCityList()
 
-        homeViewModel.viewStateLiveData.observe(requireActivity()) { viewState ->
-            when (viewState) {
-                is HomeViewModel.HomeViewState.GetCityList -> {
-                    cityAdapter.addAll(viewState.cityList)
-                }
+        homeViewModel.viewStateLiveData.observe(viewLifecycleOwner) { viewState: ViewState? ->
+            (viewState as? HomeViewModel.HomeViewState)?.let { onChangedHomeViewState(viewState) }
+        }
+    }
 
-                is HomeViewModel.HomeViewState.ErrorGetCityList -> {
-                    Toast.makeText(
-                        requireContext(),
-                        resources.getString(R.string.error_get_city_list),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
+    private fun onChangedHomeViewState(viewState: HomeViewModel.HomeViewState) {
+        when (viewState) {
+            is HomeViewModel.HomeViewState.GetCityList -> {
+                cityAdapter.addAll(viewState.cityList)
+            }
+
+            is HomeViewModel.HomeViewState.GetCityItem -> {
+                Toast.makeText(requireContext(), viewState.cityItem.name, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

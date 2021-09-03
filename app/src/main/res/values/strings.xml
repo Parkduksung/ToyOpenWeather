@@ -11,4 +11,5 @@
 
     <string name="error_get_current_weather">Not Get City Detail Info…</string>
     <string name="error_get_city_list">Not Get City Detail Info…</string>
+    <string name="error_not_search_city_item">Not Search City…</string>
 </resources>

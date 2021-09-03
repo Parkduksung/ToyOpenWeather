@@ -2,7 +2,6 @@ package com.example.toyopenweather.view.ui
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.toyopenweather.R
 import com.example.toyopenweather.base.BaseFragment
@@ -25,19 +24,14 @@ class CityDetailFragment : BaseFragment<FragmentCityDetailBinding>(R.layout.frag
         homeViewModel.getCurrentWeatherById(arguments?.getInt(KEY_CITY_ID)!!)
 
         homeViewModel.viewStateLiveData.observe(requireActivity()) { viewState ->
-            when (viewState) {
-                is HomeViewModel.HomeViewState.GetCurrentWeather -> {
-                    upDataUi(viewState.weatherItem)
-                }
+            (viewState as? HomeViewModel.HomeViewState)?.let { onChangedViewState(viewState) }
+        }
+    }
 
-                is HomeViewModel.HomeViewState.ErrorGetCurrentWeather -> {
-                    Toast.makeText(
-                        requireContext(),
-                        resources.getString(R.string.error_get_current_weather),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
+    private fun onChangedViewState(viewState: HomeViewModel.HomeViewState) {
+        when (viewState) {
+            is HomeViewModel.HomeViewState.GetCurrentWeather -> {
+                upDataUi(viewState.weatherItem)
             }
         }
     }
