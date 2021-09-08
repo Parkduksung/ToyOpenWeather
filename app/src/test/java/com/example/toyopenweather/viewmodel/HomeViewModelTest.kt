@@ -207,7 +207,7 @@ class HomeViewModelTest : ViewModelBaseTest() {
 
 
 
-        Mockito.`when`(cityRepository.getCityEntity(homeViewModel.inputCityLiveData.value!!))
+        Mockito.`when`(cityRepository.getCityEntity(mockEntity.name))
             .thenReturn(successResult)
 
         homeViewModel.getCityItem()
@@ -225,7 +225,7 @@ class HomeViewModelTest : ViewModelBaseTest() {
 
         val failResult = Result.Failure<CityEntity>(Throwable())
 
-        Mockito.`when`(cityRepository.getCityEntity(homeViewModel.inputCityLiveData.value!!))
+        Mockito.`when`(cityRepository.getCityEntity("bb"))
             .thenReturn(failResult)
 
         homeViewModel.getCityItem()

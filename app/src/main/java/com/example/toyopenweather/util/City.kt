@@ -16,7 +16,7 @@ class CityImpl(private val context: Context) : City {
                 )
             )
         } catch (e: Exception) {
-            Result.failure(e.cause!!)
+            Result.failure(Throwable("Error Read Asset File"))
         }
 
     companion object {

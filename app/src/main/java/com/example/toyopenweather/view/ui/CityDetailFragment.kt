@@ -21,7 +21,7 @@ class CityDetailFragment : BaseFragment<FragmentCityDetailBinding>(R.layout.frag
     private fun initViewModel() {
         binding.viewModel = homeViewModel
 
-        homeViewModel.getCurrentWeatherById(arguments?.getInt(KEY_CITY_ID)!!)
+        arguments?.getInt(KEY_CITY_ID)?.let { homeViewModel.getCurrentWeatherById(it) }
 
         homeViewModel.viewStateLiveData.observe(requireActivity()) { viewState ->
             (viewState as? HomeViewModel.HomeViewState)?.let { onChangedViewState(viewState) }
